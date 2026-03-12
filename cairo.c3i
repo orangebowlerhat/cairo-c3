@@ -1,0 +1,664 @@
+module cairo;
+
+const CInt COLOR_PALETTE_DEFAULT = 0;
+const ZString MIME_TYPE_CCITT_FAX = "image/g3fax";
+const ZString MIME_TYPE_CCITT_FAX_PARAMS = "application/x-cairo.ccitt.params";
+const ZString MIME_TYPE_EPS = "application/postscript";
+const ZString MIME_TYPE_EPS_PARAMS = "application/x-cairo.eps.params";
+const ZString MIME_TYPE_JBIG2 = "application/x-cairo.jbig2";
+const ZString MIME_TYPE_JBIG2_GLOBAL = "application/x-cairo.jbig2-global";
+const ZString MIME_TYPE_JBIG2_GLOBAL_ID = "application/x-cairo.jbig2-global-id";
+const ZString MIME_TYPE_JP2 = "image/jp2";
+const ZString MIME_TYPE_JPEG = "image/jpeg";
+const ZString MIME_TYPE_PNG = "image/png";
+const ZString MIME_TYPE_UNIQUE_ID = "application/x-cairo.uuid";
+const ZString MIME_TYPE_URI = "text/x-uri";
+const ZString TAG_CONTENT = "cairo.content";
+const ZString TAG_CONTENT_REF = "cairo.content_ref";
+const ZString TAG_DEST = "cairo.dest";
+const ZString TAG_LINK = "Link";
+
+enum Antialias_t: inline CInt {
+	DEFAULT,
+	NONE,
+	GRAY,
+	SUBPIXEL,
+	FAST,
+	GOOD,
+	BEST
+}
+
+enum Color_mode_t: inline CInt {
+	DEFAULT,
+	NO_COLOR,
+	COLOR
+}
+
+enum Content_t: const inline CInt {
+	COLOR = 4096,
+	ALPHA = 8192,
+	COLOR_ALPHA = 12288
+}
+
+alias Device_t = void;
+
+enum Device_type_t: const inline CInt {
+	DRM = 0,
+	GL = 1,
+	SCRIPT = 2,
+	XCB = 3,
+	XLIB = 4,
+	XML = 5,
+	COGL = 6,
+	WIN32 = 7,
+	INVALID = -1
+}
+
+enum Dither_t: inline CInt {
+	NONE,
+	DEFAULT,
+	FAST,
+	GOOD,
+	BEST
+}
+
+enum Extend_t: inline CInt {
+	NONE,
+	REPEAT,
+	REFLECT,
+	PAD
+}
+
+enum Fill_rule_t: inline CInt {
+	WINDING,
+	EVEN_ODD
+}
+
+enum Filter_t: inline CInt {
+	FAST,
+	GOOD,
+	BEST,
+	NEAREST,
+	BILINEAR,
+	GAUSSIAN
+}
+
+struct Font_extents_t {
+	double ascent;
+	double descent;
+	double height;
+	double max_x_advance;
+	double max_y_advance;
+}
+
+alias Font_face_t = void;
+
+alias Font_options_t = void;
+
+enum Font_slant_t: inline CInt {
+	NORMAL,
+	ITALIC,
+	OBLIQUE
+}
+
+enum Font_type_t: inline CInt {
+	TOY,
+	FT,
+	WIN32,
+	QUARTZ,
+	USER,
+	DWRITE
+}
+
+enum Font_weight_t: inline CInt {
+	NORMAL,
+	BOLD
+}
+
+enum Format_t: const inline CInt {
+	INVALID = -1,
+	ARGB32 = 0,
+	RGB24 = 1,
+	A8 = 2,
+	A1 = 3,
+	RGB16_565 = 4,
+	RGB30 = 5,
+	RGB96F = 6,
+	RGBA128F = 7
+}
+
+struct Glyph_t {
+	CULong index;
+	double x;
+	double y;
+}
+
+enum Hint_metrics_t: inline CInt {
+	DEFAULT,
+	OFF,
+	ON
+}
+
+enum Hint_style_t: inline CInt {
+	DEFAULT,
+	NONE,
+	SLIGHT,
+	MEDIUM,
+	FULL
+}
+
+enum Line_cap_t: inline CInt {
+	BUTT,
+	ROUND,
+	SQUARE
+}
+
+enum Line_join_t: inline CInt {
+	MITER,
+	ROUND,
+	BEVEL
+}
+
+struct Matrix_t {
+	double xx;
+	double yx;
+	double xy;
+	double yy;
+	double x0;
+	double y0;
+}
+
+enum Operator_t: inline CInt {
+	CLEAR,
+	SOURCE,
+	OVER,
+	IN,
+	OUT,
+	ATOP,
+	DEST,
+	DEST_OVER,
+	DEST_IN,
+	DEST_OUT,
+	DEST_ATOP,
+	XOR,
+	ADD,
+	SATURATE,
+	MULTIPLY,
+	SCREEN,
+	OVERLAY,
+	DARKEN,
+	LIGHTEN,
+	COLOR_DODGE,
+	COLOR_BURN,
+	HARD_LIGHT,
+	SOFT_LIGHT,
+	DIFFERENCE,
+	EXCLUSION,
+	HSL_HUE,
+	HSL_SATURATION,
+	HSL_COLOR,
+	HSL_LUMINOSITY
+}
+
+union Path_data_t {
+    struct header {
+		Path_data_type_t type;
+		int length;
+    }
+
+    struct point {
+		double x, y;
+    }
+}
+
+enum Path_data_type_t: inline CInt {
+	MOVE_TO,
+	LINE_TO,
+	CURVE_TO,
+	CLOSE_PATH
+}
+
+struct Path_t {
+	Status_t status;
+	Path_data_t* data;
+	CInt num_data;
+}
+
+alias Pattern_t = void;
+
+enum Pattern_type_t: inline CInt {
+	SOLID,
+	SURFACE,
+	LINEAR,
+	RADIAL,
+	MESH,
+	RASTER_SOURCE
+}
+
+struct Rectangle_int_t {
+	CInt x;
+	CInt y;
+	CInt width;
+	CInt height;
+}
+
+struct Rectangle_list_t {
+	Status_t status;
+	Rectangle_t* rectangles;
+	CInt num_rectangles;
+}
+
+struct Rectangle_t {
+	double x;
+	double y;
+	double width;
+	double height;
+}
+
+enum Region_overlap_t: inline CInt {
+	IN,
+	OUT,
+	PART
+}
+
+alias Region_t = void;
+
+alias Scaled_font_t = void;
+
+enum Status_t: inline CInt {
+	SUCCESS,
+	NO_MEMORY,
+	INVALID_RESTORE,
+	INVALID_POP_GROUP,
+	NO_CURRENT_POINT,
+	INVALID_MATRIX,
+	INVALID_STATUS,
+	NULL_POINTER,
+	INVALID_STRING,
+	INVALID_PATH_DATA,
+	READ_ERROR,
+	WRITE_ERROR,
+	SURFACE_FINISHED,
+	SURFACE_TYPE_MISMATCH,
+	PATTERN_TYPE_MISMATCH,
+	INVALID_CONTENT,
+	INVALID_FORMAT,
+	INVALID_VISUAL,
+	FILE_NOT_FOUND,
+	INVALID_DASH,
+	INVALID_DSC_COMMENT,
+	INVALID_INDEX,
+	CLIP_NOT_REPRESENTABLE,
+	TEMP_FILE_ERROR,
+	INVALID_STRIDE,
+	FONT_TYPE_MISMATCH,
+	USER_FONT_IMMUTABLE,
+	USER_FONT_ERROR,
+	NEGATIVE_COUNT,
+	INVALID_CLUSTERS,
+	INVALID_SLANT,
+	INVALID_WEIGHT,
+	INVALID_SIZE,
+	USER_FONT_NOT_IMPLEMENTED,
+	DEVICE_TYPE_MISMATCH,
+	DEVICE_ERROR,
+	INVALID_MESH_CONSTRUCTION,
+	DEVICE_FINISHED,
+	JBIG2_GLOBAL_MISSING,
+	PNG_ERROR,
+	FREETYPE_ERROR,
+	WIN32_GDI_ERROR,
+	TAG_ERROR,
+	DWRITE_ERROR,
+	SVG_FONT_ERROR,
+	LAST_STATUS
+}
+
+enum Subpixel_order_t: inline CInt {
+	DEFAULT,
+	RGB,
+	BGR,
+	VRGB,
+	VBGR
+}
+
+enum Surface_observer_mode_t: inline CInt {
+	NORMAL,
+	RECORD_OPERATIONS
+}
+
+alias Surface_t = void;
+
+enum Surface_type_t: inline CInt {
+	IMAGE,
+	PDF,
+	PS,
+	XLIB,
+	XCB,
+	GLITZ,
+	QUARTZ,
+	WIN32,
+	BEOS,
+	DIRECTFB,
+	SVG,
+	OS2,
+	WIN32_PRINTING,
+	QUARTZ_IMAGE,
+	SCRIPT,
+	QT,
+	RECORDING,
+	VG,
+	GL,
+	DRM,
+	TEE,
+	XML,
+	SKIA,
+	SUBSURFACE,
+	COGL
+}
+
+alias Context_t = void;
+
+enum Text_cluster_flags_t: const inline CInt {
+	TEXT_CLUSTER_FLAG_BACKWARD = 1
+}
+
+struct Text_cluster_t {
+	CInt num_bytes;
+	CInt num_glyphs;
+}
+
+struct Text_extents_t {
+	double x_bearing;
+	double y_bearing;
+	double width;
+	double height;
+	double x_advance;
+	double y_advance;
+}
+
+struct User_data_key_t {
+	CInt unused;
+}
+
+extern fn void append_path (Context_t* cr, Path_t* path) @extern ("cairo_append_path");
+extern fn void arc (Context_t* cr, double xc, double yc, double radius, double angle1, double angle2) @extern ("cairo_arc");
+extern fn void arc_negative (Context_t* cr, double xc, double yc, double radius, double angle1, double angle2) @extern ("cairo_arc_negative");
+extern fn void clip (Context_t* cr) @extern ("cairo_clip");
+extern fn void clip_extents (Context_t* cr, double* x1, double* y1, double* x2, double* y2) @extern ("cairo_clip_extents");
+extern fn void clip_preserve (Context_t* cr) @extern ("cairo_clip_preserve");
+extern fn void close_path (Context_t* cr) @extern ("cairo_close_path");
+extern fn void copy_page (Context_t* cr) @extern ("cairo_copy_page");
+extern fn void curve_to (Context_t* cr, double x1, double y1, double x2, double y2, double x3, double y3) @extern ("cairo_curve_to");
+extern fn void debug_reset_static_data () @extern ("cairo_debug_reset_static_data");
+extern fn void destroy (Context_t* cr) @extern ("cairo_destroy");
+alias Destroy_func_t = fn void (void* data);
+extern fn Status_t device_acquire (Device_t* device) @extern ("cairo_device_acquire");
+extern fn void device_destroy (Device_t* device) @extern ("cairo_device_destroy");
+extern fn void device_finish (Device_t* device) @extern ("cairo_device_finish");
+extern fn void device_flush (Device_t* device) @extern ("cairo_device_flush");
+extern fn CUInt device_get_reference_count (Device_t* device) @extern ("cairo_device_get_reference_count");
+extern fn Device_type_t device_get_type (Device_t* device) @extern ("cairo_device_get_type");
+extern fn void* device_get_user_data (Device_t* device, User_data_key_t* key) @extern ("cairo_device_get_user_data");
+extern fn double device_observer_elapsed (Device_t* abstract_device) @extern ("cairo_device_observer_elapsed");
+extern fn double device_observer_fill_elapsed (Device_t* abstract_device) @extern ("cairo_device_observer_fill_elapsed");
+extern fn double device_observer_glyphs_elapsed (Device_t* abstract_device) @extern ("cairo_device_observer_glyphs_elapsed");
+extern fn double device_observer_mask_elapsed (Device_t* abstract_device) @extern ("cairo_device_observer_mask_elapsed");
+extern fn double device_observer_paint_elapsed (Device_t* abstract_device) @extern ("cairo_device_observer_paint_elapsed");
+extern fn double device_observer_stroke_elapsed (Device_t* abstract_device) @extern ("cairo_device_observer_stroke_elapsed");
+extern fn void device_release (Device_t* device) @extern ("cairo_device_release");
+extern fn Status_t device_status (Device_t* device) @extern ("cairo_device_status");
+extern fn void device_to_user (Context_t* cr, double* x, double* y) @extern ("cairo_device_to_user");
+extern fn void device_to_user_distance (Context_t* cr, double* dx, double* dy) @extern ("cairo_device_to_user_distance");
+extern fn void fill (Context_t* cr) @extern ("cairo_fill");
+extern fn void fill_extents (Context_t* cr, double* x1, double* y1, double* x2, double* y2) @extern ("cairo_fill_extents");
+extern fn void fill_preserve (Context_t* cr) @extern ("cairo_fill_preserve");
+extern fn void font_extents (Context_t* cr, Font_extents_t* extents) @extern ("cairo_font_extents");
+extern fn void font_face_destroy (Font_face_t* font_face) @extern ("cairo_font_face_destroy");
+extern fn CUInt font_face_get_reference_count (Font_face_t* font_face) @extern ("cairo_font_face_get_reference_count");
+extern fn Font_type_t font_face_get_type (Font_face_t* font_face) @extern ("cairo_font_face_get_type");
+extern fn void* font_face_get_user_data (Font_face_t* font_face, User_data_key_t* key) @extern ("cairo_font_face_get_user_data");
+extern fn Status_t font_face_status (Font_face_t* font_face) @extern ("cairo_font_face_status");
+extern fn void font_options_destroy (Font_options_t* options) @extern ("cairo_font_options_destroy");
+extern fn CInt font_options_equal (Font_options_t* options, Font_options_t* other) @extern ("cairo_font_options_equal");
+extern fn Antialias_t font_options_get_antialias (Font_options_t* options) @extern ("cairo_font_options_get_antialias");
+extern fn Color_mode_t font_options_get_color_mode (Font_options_t* options) @extern ("cairo_font_options_get_color_mode");
+extern fn CUInt font_options_get_color_palette (Font_options_t* options) @extern ("cairo_font_options_get_color_palette");
+extern fn Status_t font_options_get_custom_palette_color (Font_options_t* options, CUInt index, double* red, double* green, double* blue, double* alpha) @extern ("cairo_font_options_get_custom_palette_color");
+extern fn Hint_metrics_t font_options_get_hint_metrics (Font_options_t* options) @extern ("cairo_font_options_get_hint_metrics");
+extern fn Hint_style_t font_options_get_hint_style (Font_options_t* options) @extern ("cairo_font_options_get_hint_style");
+extern fn Subpixel_order_t font_options_get_subpixel_order (Font_options_t* options) @extern ("cairo_font_options_get_subpixel_order");
+extern fn ZString font_options_get_variations (Font_options_t* options) @extern ("cairo_font_options_get_variations");
+extern fn CULong font_options_hash (Font_options_t* options) @extern ("cairo_font_options_hash");
+extern fn void font_options_merge (Font_options_t* options, Font_options_t* other) @extern ("cairo_font_options_merge");
+extern fn void font_options_set_antialias (Font_options_t* options, Antialias_t antialias) @extern ("cairo_font_options_set_antialias");
+extern fn void font_options_set_color_mode (Font_options_t* options, Color_mode_t color_mode) @extern ("cairo_font_options_set_color_mode");
+extern fn void font_options_set_color_palette (Font_options_t* options, CUInt palette_index) @extern ("cairo_font_options_set_color_palette");
+extern fn void font_options_set_custom_palette_color (Font_options_t* options, CUInt index, double red, double green, double blue, double alpha) @extern ("cairo_font_options_set_custom_palette_color");
+extern fn void font_options_set_hint_metrics (Font_options_t* options, Hint_metrics_t hint_metrics) @extern ("cairo_font_options_set_hint_metrics");
+extern fn void font_options_set_hint_style (Font_options_t* options, Hint_style_t hint_style) @extern ("cairo_font_options_set_hint_style");
+extern fn void font_options_set_subpixel_order (Font_options_t* options, Subpixel_order_t subpixel_order) @extern ("cairo_font_options_set_subpixel_order");
+extern fn void font_options_set_variations (Font_options_t* options, ZString variations) @extern ("cairo_font_options_set_variations");
+extern fn Status_t font_options_status (Font_options_t* options) @extern ("cairo_font_options_status");
+extern fn CInt format_stride_for_width (Format_t format, CInt width) @extern ("cairo_format_stride_for_width");
+extern fn Antialias_t get_antialias (Context_t* cr) @extern ("cairo_get_antialias");
+extern fn void get_current_point (Context_t* cr, double* x, double* y) @extern ("cairo_get_current_point");
+extern fn void get_dash (Context_t* cr, double* dashes, double* offset) @extern ("cairo_get_dash");
+extern fn CInt get_dash_count (Context_t* cr) @extern ("cairo_get_dash_count");
+extern fn Fill_rule_t get_fill_rule (Context_t* cr) @extern ("cairo_get_fill_rule");
+extern fn void get_font_matrix (Context_t* cr, Matrix_t* matrix) @extern ("cairo_get_font_matrix");
+extern fn void get_font_options (Context_t* cr, Font_options_t* options) @extern ("cairo_get_font_options");
+extern fn CInt get_hairline (Context_t* cr) @extern ("cairo_get_hairline");
+extern fn Line_cap_t get_line_cap (Context_t* cr) @extern ("cairo_get_line_cap");
+extern fn Line_join_t get_line_join (Context_t* cr) @extern ("cairo_get_line_join");
+extern fn double get_line_width (Context_t* cr) @extern ("cairo_get_line_width");
+extern fn void get_matrix (Context_t* cr, Matrix_t* matrix) @extern ("cairo_get_matrix");
+extern fn double get_miter_limit (Context_t* cr) @extern ("cairo_get_miter_limit");
+extern fn Operator_t get_operator (Context_t* cr) @extern ("cairo_get_operator");
+extern fn CUInt get_reference_count (Context_t* cr) @extern ("cairo_get_reference_count");
+extern fn double get_tolerance (Context_t* cr) @extern ("cairo_get_tolerance");
+extern fn void* get_user_data (Context_t* cr, User_data_key_t* key) @extern ("cairo_get_user_data");
+extern fn void glyph_extents (Context_t* cr, Glyph_t* glyphs, CInt num_glyphs, Text_extents_t* extents) @extern ("cairo_glyph_extents");
+extern fn void glyph_free (Glyph_t* glyphs) @extern ("cairo_glyph_free");
+extern fn void glyph_path (Context_t* cr, Glyph_t* glyphs, CInt num_glyphs) @extern ("cairo_glyph_path");
+extern fn CInt has_current_point (Context_t* cr) @extern ("cairo_has_current_point");
+extern fn void identity_matrix (Context_t* cr) @extern ("cairo_identity_matrix");
+extern fn char* image_surface_get_data (Surface_t* surface) @extern ("cairo_image_surface_get_data");
+extern fn Format_t image_surface_get_format (Surface_t* surface) @extern ("cairo_image_surface_get_format");
+extern fn CInt image_surface_get_height (Surface_t* surface) @extern ("cairo_image_surface_get_height");
+extern fn CInt image_surface_get_stride (Surface_t* surface) @extern ("cairo_image_surface_get_stride");
+extern fn CInt image_surface_get_width (Surface_t* surface) @extern ("cairo_image_surface_get_width");
+extern fn CInt in_clip (Context_t* cr, double x, double y) @extern ("cairo_in_clip");
+extern fn CInt in_fill (Context_t* cr, double x, double y) @extern ("cairo_in_fill");
+extern fn CInt in_stroke (Context_t* cr, double x, double y) @extern ("cairo_in_stroke");
+extern fn void line_to (Context_t* cr, double x, double y) @extern ("cairo_line_to");
+extern fn void mask (Context_t* cr, Pattern_t* pattern) @extern ("cairo_mask");
+extern fn void mask_surface (Context_t* cr, Surface_t* surface, double surface_x, double surface_y) @extern ("cairo_mask_surface");
+extern fn void matrix_init (Matrix_t* matrix, double xx, double yx, double xy, double yy, double x0, double y0) @extern ("cairo_matrix_init");
+extern fn void matrix_init_identity (Matrix_t* matrix) @extern ("cairo_matrix_init_identity");
+extern fn void matrix_init_rotate (Matrix_t* matrix, double radians) @extern ("cairo_matrix_init_rotate");
+extern fn void matrix_init_scale (Matrix_t* matrix, double sx, double sy) @extern ("cairo_matrix_init_scale");
+extern fn void matrix_init_translate (Matrix_t* matrix, double tx, double ty) @extern ("cairo_matrix_init_translate");
+extern fn Status_t matrix_invert (Matrix_t* matrix) @extern ("cairo_matrix_invert");
+extern fn void matrix_multiply (Matrix_t* result, Matrix_t* a, Matrix_t* b) @extern ("cairo_matrix_multiply");
+extern fn void matrix_rotate (Matrix_t* matrix, double radians) @extern ("cairo_matrix_rotate");
+extern fn void matrix_scale (Matrix_t* matrix, double sx, double sy) @extern ("cairo_matrix_scale");
+extern fn void matrix_transform_distance (Matrix_t* matrix, double* dx, double* dy) @extern ("cairo_matrix_transform_distance");
+extern fn void matrix_transform_point (Matrix_t* matrix, double* x, double* y) @extern ("cairo_matrix_transform_point");
+extern fn void matrix_translate (Matrix_t* matrix, double tx, double ty) @extern ("cairo_matrix_translate");
+extern fn void mesh_pattern_begin_patch (Pattern_t* pattern) @extern ("cairo_mesh_pattern_begin_patch");
+extern fn void mesh_pattern_curve_to (Pattern_t* pattern, double x1, double y1, double x2, double y2, double x3, double y3) @extern ("cairo_mesh_pattern_curve_to");
+extern fn void mesh_pattern_end_patch (Pattern_t* pattern) @extern ("cairo_mesh_pattern_end_patch");
+extern fn Status_t mesh_pattern_get_control_point (Pattern_t* pattern, CUInt patch_num, CUInt point_num, double* x, double* y) @extern ("cairo_mesh_pattern_get_control_point");
+extern fn Status_t mesh_pattern_get_corner_color_rgba (Pattern_t* pattern, CUInt patch_num, CUInt corner_num, double* red, double* green, double* blue, double* alpha) @extern ("cairo_mesh_pattern_get_corner_color_rgba");
+extern fn Status_t mesh_pattern_get_patch_count (Pattern_t* pattern, CUInt* count) @extern ("cairo_mesh_pattern_get_patch_count");
+extern fn void mesh_pattern_line_to (Pattern_t* pattern, double x, double y) @extern ("cairo_mesh_pattern_line_to");
+extern fn void mesh_pattern_move_to (Pattern_t* pattern, double x, double y) @extern ("cairo_mesh_pattern_move_to");
+extern fn void mesh_pattern_set_control_point (Pattern_t* pattern, CUInt point_num, double x, double y) @extern ("cairo_mesh_pattern_set_control_point");
+extern fn void mesh_pattern_set_corner_color_rgb (Pattern_t* pattern, CUInt corner_num, double red, double green, double blue) @extern ("cairo_mesh_pattern_set_corner_color_rgb");
+extern fn void mesh_pattern_set_corner_color_rgba (Pattern_t* pattern, CUInt corner_num, double red, double green, double blue, double alpha) @extern ("cairo_mesh_pattern_set_corner_color_rgba");
+extern fn void move_to (Context_t* cr, double x, double y) @extern ("cairo_move_to");
+extern fn void new_path (Context_t* cr) @extern ("cairo_new_path");
+extern fn void new_sub_path (Context_t* cr) @extern ("cairo_new_sub_path");
+extern fn void paint (Context_t* cr) @extern ("cairo_paint");
+extern fn void paint_with_alpha (Context_t* cr, double alpha) @extern ("cairo_paint_with_alpha");
+extern fn void path_destroy (Path_t* path) @extern ("cairo_path_destroy");
+extern fn void path_extents (Context_t* cr, double* x1, double* y1, double* x2, double* y2) @extern ("cairo_path_extents");
+extern fn void pattern_add_color_stop_rgb (Pattern_t* pattern, double offset, double red, double green, double blue) @extern ("cairo_pattern_add_color_stop_rgb");
+extern fn void pattern_add_color_stop_rgba (Pattern_t* pattern, double offset, double red, double green, double blue, double alpha) @extern ("cairo_pattern_add_color_stop_rgba");
+extern fn void pattern_destroy (Pattern_t* pattern) @extern ("cairo_pattern_destroy");
+extern fn Status_t pattern_get_color_stop_count (Pattern_t* pattern, CInt* count) @extern ("cairo_pattern_get_color_stop_count");
+extern fn Status_t pattern_get_color_stop_rgba (Pattern_t* pattern, CInt index, double* offset, double* red, double* green, double* blue, double* alpha) @extern ("cairo_pattern_get_color_stop_rgba");
+extern fn Dither_t pattern_get_dither (Pattern_t* pattern) @extern ("cairo_pattern_get_dither");
+extern fn Extend_t pattern_get_extend (Pattern_t* pattern) @extern ("cairo_pattern_get_extend");
+extern fn Filter_t pattern_get_filter (Pattern_t* pattern) @extern ("cairo_pattern_get_filter");
+extern fn Status_t pattern_get_linear_points (Pattern_t* pattern, double* x0, double* y0, double* x1, double* y1) @extern ("cairo_pattern_get_linear_points");
+extern fn void pattern_get_matrix (Pattern_t* pattern, Matrix_t* matrix) @extern ("cairo_pattern_get_matrix");
+extern fn Status_t pattern_get_radial_circles (Pattern_t* pattern, double* x0, double* y0, double* r0, double* x1, double* y1, double* r1) @extern ("cairo_pattern_get_radial_circles");
+extern fn CUInt pattern_get_reference_count (Pattern_t* pattern) @extern ("cairo_pattern_get_reference_count");
+extern fn Status_t pattern_get_rgba (Pattern_t* pattern, double* red, double* green, double* blue, double* alpha) @extern ("cairo_pattern_get_rgba");
+extern fn Status_t pattern_get_surface (Pattern_t* pattern, Surface_t* surface) @extern ("cairo_pattern_get_surface");
+extern fn Pattern_type_t pattern_get_type (Pattern_t* pattern) @extern ("cairo_pattern_get_type");
+extern fn void* pattern_get_user_data (Pattern_t* pattern, User_data_key_t* key) @extern ("cairo_pattern_get_user_data");
+extern fn void pattern_set_dither (Pattern_t* pattern, Dither_t dither) @extern ("cairo_pattern_set_dither");
+extern fn void pattern_set_extend (Pattern_t* pattern, Extend_t extend) @extern ("cairo_pattern_set_extend");
+extern fn void pattern_set_filter (Pattern_t* pattern, Filter_t filter) @extern ("cairo_pattern_set_filter");
+extern fn void pattern_set_matrix (Pattern_t* pattern, Matrix_t* matrix) @extern ("cairo_pattern_set_matrix");
+extern fn Status_t pattern_status (Pattern_t* pattern) @extern ("cairo_pattern_status");
+extern fn void pop_group_to_source (Context_t* cr) @extern ("cairo_pop_group_to_source");
+extern fn void push_group (Context_t* cr) @extern ("cairo_push_group");
+extern fn void push_group_with_content (Context_t* cr, Content_t content) @extern ("cairo_push_group_with_content");
+
+alias Raster_source_copy_func_t = fn Status_t (Pattern_t* pattern, void* callback_data, Pattern_t* other);
+alias Raster_source_finish_func_t = fn void (Pattern_t* pattern, void* callback_data);
+
+extern fn void* raster_source_pattern_get_callback_data (Pattern_t* pattern) @extern ("cairo_raster_source_pattern_get_callback_data");
+extern fn void raster_source_pattern_set_callback_data (Pattern_t* pattern, void* data) @extern ("cairo_raster_source_pattern_set_callback_data");
+
+alias Raster_source_release_func_t = fn void (Pattern_t* pattern, void* callback_data, Surface_t* surface);
+alias Raster_source_snapshot_func_t = fn Status_t (Pattern_t* pattern, void* callback_data);
+alias Read_func_t = fn Status_t (void* closure, char* data, CUInt length);
+
+extern fn CInt recording_surface_get_extents (Surface_t* surface, Rectangle_t* extents) @extern ("cairo_recording_surface_get_extents");
+extern fn void recording_surface_ink_extents (Surface_t* surface, double* x0, double* y0, double* width, double* height) @extern ("cairo_recording_surface_ink_extents");
+extern fn void rectangle (Context_t* cr, double x, double y, double width, double height) @extern ("cairo_rectangle");
+extern fn void rectangle_list_destroy (Rectangle_list_t* rectangle_list) @extern ("cairo_rectangle_list_destroy");
+extern fn CInt region_contains_point (Region_t* region, CInt x, CInt y) @extern ("cairo_region_contains_point");
+extern fn Region_overlap_t region_contains_rectangle (Region_t* region, Rectangle_int_t* rectangle) @extern ("cairo_region_contains_rectangle");
+extern fn void region_destroy (Region_t* region) @extern ("cairo_region_destroy");
+extern fn CInt region_equal (Region_t* a, Region_t* b) @extern ("cairo_region_equal");
+extern fn void region_get_extents (Region_t* region, Rectangle_int_t* extents) @extern ("cairo_region_get_extents");
+extern fn void region_get_rectangle (Region_t* region, CInt nth, Rectangle_int_t* rectangle) @extern ("cairo_region_get_rectangle");
+extern fn Status_t region_intersect (Region_t* dst, Region_t* other) @extern ("cairo_region_intersect");
+extern fn Status_t region_intersect_rectangle (Region_t* dst, Rectangle_int_t* rectangle) @extern ("cairo_region_intersect_rectangle");
+extern fn CInt region_is_empty (Region_t* region) @extern ("cairo_region_is_empty");
+extern fn CInt region_num_rectangles (Region_t* region) @extern ("cairo_region_num_rectangles");
+extern fn Status_t region_status (Region_t* region) @extern ("cairo_region_status");
+extern fn Status_t region_subtract (Region_t* dst, Region_t* other) @extern ("cairo_region_subtract");
+extern fn Status_t region_subtract_rectangle (Region_t* dst, Rectangle_int_t* rectangle) @extern ("cairo_region_subtract_rectangle");
+extern fn void region_translate (Region_t* region, CInt dx, CInt dy) @extern ("cairo_region_translate");
+extern fn Status_t region_union (Region_t* dst, Region_t* other) @extern ("cairo_region_union");
+extern fn Status_t region_union_rectangle (Region_t* dst, Rectangle_int_t* rectangle) @extern ("cairo_region_union_rectangle");
+extern fn Status_t region_xor (Region_t* dst, Region_t* other) @extern ("cairo_region_xor");
+extern fn Status_t region_xor_rectangle (Region_t* dst, Rectangle_int_t* rectangle) @extern ("cairo_region_xor_rectangle");
+extern fn void rel_curve_to (Context_t* cr, double dx1, double dy1, double dx2, double dy2, double dx3, double dy3) @extern ("cairo_rel_curve_to");
+extern fn void rel_line_to (Context_t* cr, double dx, double dy) @extern ("cairo_rel_line_to");
+extern fn void rel_move_to (Context_t* cr, double dx, double dy) @extern ("cairo_rel_move_to");
+extern fn void reset_clip (Context_t* cr) @extern ("cairo_reset_clip");
+extern fn void restore (Context_t* cr) @extern ("cairo_restore");
+extern fn void rotate (Context_t* cr, double angle) @extern ("cairo_rotate");
+extern fn void save (Context_t* cr) @extern ("cairo_save");
+extern fn void scale (Context_t* cr, double sx, double sy) @extern ("cairo_scale");
+extern fn void scaled_font_destroy (Scaled_font_t* scaled_font) @extern ("cairo_scaled_font_destroy");
+extern fn void scaled_font_extents (Scaled_font_t* scaled_font, Font_extents_t* extents) @extern ("cairo_scaled_font_extents");
+extern fn void scaled_font_get_ctm (Scaled_font_t* scaled_font, Matrix_t* ctm) @extern ("cairo_scaled_font_get_ctm");
+extern fn void scaled_font_get_font_matrix (Scaled_font_t* scaled_font, Matrix_t* font_matrix) @extern ("cairo_scaled_font_get_font_matrix");
+extern fn void scaled_font_get_font_options (Scaled_font_t* scaled_font, Font_options_t* options) @extern ("cairo_scaled_font_get_font_options");
+extern fn CUInt scaled_font_get_reference_count (Scaled_font_t* scaled_font) @extern ("cairo_scaled_font_get_reference_count");
+extern fn void scaled_font_get_scale_matrix (Scaled_font_t* scaled_font, Matrix_t* scale_matrix) @extern ("cairo_scaled_font_get_scale_matrix");
+extern fn Font_type_t scaled_font_get_type (Scaled_font_t* scaled_font) @extern ("cairo_scaled_font_get_type");
+extern fn void* scaled_font_get_user_data (Scaled_font_t* scaled_font, User_data_key_t* key) @extern ("cairo_scaled_font_get_user_data");
+extern fn void scaled_font_glyph_extents (Scaled_font_t* scaled_font, Glyph_t* glyphs, CInt num_glyphs, Text_extents_t* extents) @extern ("cairo_scaled_font_glyph_extents");
+extern fn Status_t scaled_font_status (Scaled_font_t* scaled_font) @extern ("cairo_scaled_font_status");
+extern fn void scaled_font_text_extents (Scaled_font_t* scaled_font, ZString utf8, Text_extents_t* extents) @extern ("cairo_scaled_font_text_extents");
+extern fn Status_t scaled_font_text_to_glyphs (Scaled_font_t* scaled_font, double x, double y, ZString utf8, CInt utf8_len, Glyph_t* glyphs, CInt* num_glyphs, Text_cluster_t* clusters, CInt* num_clusters, Text_cluster_flags_t* cluster_flags) @extern ("cairo_scaled_font_text_to_glyphs");
+extern fn void select_font_face (Context_t* cr, ZString family, Font_slant_t slant, Font_weight_t weight) @extern ("cairo_select_font_face");
+extern fn void set_antialias (Context_t* cr, Antialias_t antialias) @extern ("cairo_set_antialias");
+extern fn void set_dash (Context_t* cr, double* dashes, CInt num_dashes, double offset) @extern ("cairo_set_dash");
+extern fn void set_fill_rule (Context_t* cr, Fill_rule_t fill_rule) @extern ("cairo_set_fill_rule");
+extern fn void set_font_face (Context_t* cr, Font_face_t* font_face) @extern ("cairo_set_font_face");
+extern fn void set_font_matrix (Context_t* cr, Matrix_t* matrix) @extern ("cairo_set_font_matrix");
+extern fn void set_font_options (Context_t* cr, Font_options_t* options) @extern ("cairo_set_font_options");
+extern fn void set_font_size (Context_t* cr, double size) @extern ("cairo_set_font_size");
+extern fn void set_hairline (Context_t* cr, CInt set_hairline) @extern ("cairo_set_hairline");
+extern fn void set_line_cap (Context_t* cr, Line_cap_t line_cap) @extern ("cairo_set_line_cap");
+extern fn void set_line_join (Context_t* cr, Line_join_t line_join) @extern ("cairo_set_line_join");
+extern fn void set_line_width (Context_t* cr, double width) @extern ("cairo_set_line_width");
+extern fn void set_matrix (Context_t* cr, Matrix_t* matrix) @extern ("cairo_set_matrix");
+extern fn void set_miter_limit (Context_t* cr, double limit) @extern ("cairo_set_miter_limit");
+extern fn void set_operator (Context_t* cr, Operator_t op) @extern ("cairo_set_operator");
+extern fn void set_scaled_font (Context_t* cr, Scaled_font_t* scaled_font) @extern ("cairo_set_scaled_font");
+extern fn void set_source (Context_t* cr, Pattern_t* source) @extern ("cairo_set_source");
+extern fn void set_source_rgb (Context_t* cr, double red, double green, double blue) @extern ("cairo_set_source_rgb");
+extern fn void set_source_rgba (Context_t* cr, double red, double green, double blue, double alpha) @extern ("cairo_set_source_rgba");
+extern fn void set_source_surface (Context_t* cr, Surface_t* surface, double x, double y) @extern ("cairo_set_source_surface");
+extern fn void set_tolerance (Context_t* cr, double tolerance) @extern ("cairo_set_tolerance");
+extern fn void show_glyphs (Context_t* cr, Glyph_t* glyphs, CInt num_glyphs) @extern ("cairo_show_glyphs");
+extern fn void show_page (Context_t* cr) @extern ("cairo_show_page");
+extern fn void show_text (Context_t* cr, ZString utf8) @extern ("cairo_show_text");
+extern fn void show_text_glyphs (Context_t* cr, ZString utf8, CInt utf8_len, Glyph_t* glyphs, CInt num_glyphs, Text_cluster_t* clusters, CInt num_clusters, Text_cluster_flags_t cluster_flags) @extern ("cairo_show_text_glyphs");
+extern fn Status_t status (Context_t* cr) @extern ("cairo_status");
+extern fn ZString status_to_string (Status_t status) @extern ("cairo_status_to_string");
+extern fn void stroke (Context_t* cr) @extern ("cairo_stroke");
+extern fn void stroke_extents (Context_t* cr, double* x1, double* y1, double* x2, double* y2) @extern ("cairo_stroke_extents");
+extern fn void stroke_preserve (Context_t* cr) @extern ("cairo_stroke_preserve");
+extern fn void surface_copy_page (Surface_t* surface) @extern ("cairo_surface_copy_page");
+extern fn void surface_destroy (Surface_t* surface) @extern ("cairo_surface_destroy");
+extern fn void surface_finish (Surface_t* surface) @extern ("cairo_surface_finish");
+extern fn void surface_flush (Surface_t* surface) @extern ("cairo_surface_flush");
+extern fn Content_t surface_get_content (Surface_t* surface) @extern ("cairo_surface_get_content");
+extern fn void surface_get_device_offset (Surface_t* surface, double* x_offset, double* y_offset) @extern ("cairo_surface_get_device_offset");
+extern fn void surface_get_device_scale (Surface_t* surface, double* x_scale, double* y_scale) @extern ("cairo_surface_get_device_scale");
+extern fn void surface_get_fallback_resolution (Surface_t* surface, double* x_pixels_per_inch, double* y_pixels_per_inch) @extern ("cairo_surface_get_fallback_resolution");
+extern fn void surface_get_font_options (Surface_t* surface, Font_options_t* options) @extern ("cairo_surface_get_font_options");
+extern fn void surface_get_mime_data (Surface_t* surface, ZString mime_type, char* data, CULong* length) @extern ("cairo_surface_get_mime_data");
+extern fn CUInt surface_get_reference_count (Surface_t* surface) @extern ("cairo_surface_get_reference_count");
+extern fn Surface_type_t surface_get_type (Surface_t* surface) @extern ("cairo_surface_get_type");
+extern fn void* surface_get_user_data (Surface_t* surface, User_data_key_t* key) @extern ("cairo_surface_get_user_data");
+extern fn CInt surface_has_show_text_glyphs (Surface_t* surface) @extern ("cairo_surface_has_show_text_glyphs");
+extern fn void surface_mark_dirty (Surface_t* surface) @extern ("cairo_surface_mark_dirty");
+extern fn void surface_mark_dirty_rectangle (Surface_t* surface, CInt x, CInt y, CInt width, CInt height) @extern ("cairo_surface_mark_dirty_rectangle");
+
+alias Surface_observer_callback_t = fn void (Surface_t* observer, Surface_t* target, void* data);
+
+extern fn double surface_observer_elapsed (Surface_t* abstract_surface) @extern ("cairo_surface_observer_elapsed");
+extern fn void surface_set_device_offset (Surface_t* surface, double x_offset, double y_offset) @extern ("cairo_surface_set_device_offset");
+extern fn void surface_set_device_scale (Surface_t* surface, double x_scale, double y_scale) @extern ("cairo_surface_set_device_scale");
+extern fn void surface_set_fallback_resolution (Surface_t* surface, double x_pixels_per_inch, double y_pixels_per_inch) @extern ("cairo_surface_set_fallback_resolution");
+extern fn void surface_show_page (Surface_t* surface) @extern ("cairo_surface_show_page");
+extern fn Status_t surface_status (Surface_t* surface) @extern ("cairo_surface_status");
+extern fn CInt surface_supports_mime_type (Surface_t* surface, ZString mime_type) @extern ("cairo_surface_supports_mime_type");
+extern fn void surface_unmap_image (Surface_t* surface, Surface_t* image) @extern ("cairo_surface_unmap_image");
+extern fn Status_t surface_write_to_png (Surface_t* surface, ZString filename) @extern ("cairo_surface_write_to_png");
+extern fn void tag_begin (Context_t* cr, ZString tag_name, ZString attributes) @extern ("cairo_tag_begin");
+extern fn void tag_end (Context_t* cr, ZString tag_name) @extern ("cairo_tag_end");
+extern fn void text_cluster_free (Text_cluster_t* clusters) @extern ("cairo_text_cluster_free");
+extern fn void text_extents (Context_t* cr, ZString utf8, Text_extents_t* extents) @extern ("cairo_text_extents");
+extern fn void text_path (Context_t* cr, ZString utf8) @extern ("cairo_text_path");
+extern fn ZString toy_font_face_get_family (Font_face_t* font_face) @extern ("cairo_toy_font_face_get_family");
+extern fn Font_slant_t toy_font_face_get_slant (Font_face_t* font_face) @extern ("cairo_toy_font_face_get_slant");
+extern fn Font_weight_t toy_font_face_get_weight (Font_face_t* font_face) @extern ("cairo_toy_font_face_get_weight");
+extern fn void transform (Context_t* cr, Matrix_t* matrix) @extern ("cairo_transform");
+extern fn void translate (Context_t* cr, double tx, double ty) @extern ("cairo_translate");
+
+alias User_scaled_font_init_func_t = fn Status_t (Scaled_font_t* scaled_font, Context_t* cr, Font_extents_t* extents);
+alias User_scaled_font_render_glyph_func_t = fn Status_t (Scaled_font_t* scaled_font, CULong glyph, Context_t* cr, Text_extents_t* extents);
+alias User_scaled_font_text_to_glyphs_func_t = fn Status_t (Scaled_font_t* scaled_font, ZString utf8, CInt utf8_len, Glyph_t* glyphs, CInt* num_glyphs, Text_cluster_t* clusters, CInt* num_clusters, Text_cluster_flags_t* cluster_flags);
+alias User_scaled_font_unicode_to_glyph_func_t = fn Status_t (Scaled_font_t* scaled_font, CULong unicode, CULong* glyph_index);
+
+extern fn void user_to_device (Context_t* cr, double* x, double* y) @extern ("cairo_user_to_device");
+extern fn void user_to_device_distance (Context_t* cr, double* dx, double* dy) @extern ("cairo_user_to_device_distance");
+extern fn CInt version () @extern ("cairo_version");
+extern fn ZString version_string () @extern ("cairo_version_string");
+
+alias Write_func_t = fn Status_t (void* closure, char* data, CUInt length);
